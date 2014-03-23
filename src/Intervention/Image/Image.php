@@ -449,38 +449,22 @@ class Image
     }
 
      /**
-     * Resize image to the biggest possible size within given boundaries, constraining proportions
+     * Resize image to a fixed target-area (given in pixels), constraining proportions
      *
      * biggest: mwuits 2014-03-23
      * @param  integer $height
      * @return Image
      */
-    public function biggest($width,$height) 
+    public function area($pixelcount) 
      {
-         $w=$this->width;
-         $h=$this->height;
-         // never upscale:
-         if ($width>$w) {
-             $width=$w;
-         }
-         if ($height>$h) {
-             $height=$h;
-         }
-
-         //return plain image if no sizing is needed
-         if ($width==$w && $h<=$height) {
-             return $this;
-         }
-
-         if ($height==$h && $w<=$width) {
-             return $this;
-         }
-
-         return $this->resize($width, $height, true);
+         $ratio  = $this->width / $this->height;
+         $width  = (int)round(sqrt($pixelcount * $ratio));
+         $height = (int)floor($width / $ratio);
+         return $this->resize($width, $height);
      }
-    
-
-    /**
+     
+     
+     /**
      * Resize image to new width, constraining proportions
      *
      * @param  integer $width
