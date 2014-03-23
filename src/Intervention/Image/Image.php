@@ -448,6 +448,38 @@ class Image
         return $this->resize($width, $height, true);
     }
 
+     /**
+     * Resize image to the biggest possible size within given boundaries, constraining proportions
+     *
+     * biggest: mwuits 2014-03-23
+     * @param  integer $height
+     * @return Image
+     */
+    public function biggest($width,$height) 
+     {
+         $w=$this->width;
+         $h=$this->height;
+         // never upscale:
+         if ($width>$w) {
+             $width=$w;
+         }
+         if ($height>$h) {
+             $height=$h;
+         }
+
+         //return plain image if no sizing is needed
+         if ($width==$w && $h<=$height) {
+             return $this;
+         }
+
+         if ($height==$h && $w<=$width) {
+             return $this;
+         }
+
+         return $this->resize($width, $height, true);
+     }
+    
+
     /**
      * Resize image to new width, constraining proportions
      *
